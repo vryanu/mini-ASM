@@ -59,42 +59,40 @@ void print(char text)
     }
 }
 
-int condition(int a, char *sign, int arg2)
+int evalSign(int a, char *sign, int b)
 {
-    if (strcmp(sign, ">") == 0)
-        {
-            if (a > arg2)
-                printf("True\n");
-            else
-                printf("False\n");
-            return a > arg2;
-        }
-    if (strcmp(sign, "<") == 0)
-        {
-            if (a < arg2)
-                printf("True\n");
-            else
-                printf("False\n");
-            return a < arg2;
-        }
-    if (strcmp(sign, "==") == 0)
-        {
-            if (a == arg2)
-                printf("True\n");
-            else
-                printf("False\n");
-            return a == arg2;
-        }
-    if (strcmp(sign, "!=") == 0)
-        {
-            if (a != arg2)
-                printf("True\n");
-            else
-                printf("False\n");
-            return a != arg2;
-        }
-
+    if (strcmp(sign, ">") == 0)  return a > b;
+    if (strcmp(sign, "<") == 0)  return a < b;
+    if (strcmp(sign, "==") == 0) return a == b;
+    if (strcmp(sign, "!=") == 0) return a != b;
     return 0;
+}
+
+int condition(int a, char *sign, int b, char *op, int c, char *sign2, int d)
+{
+    int left = evalSign(a, sign, b);
+    int right = evalSign(c, sign2, d);
+    int result;
+
+    if (strcmp(op, "") == 0)
+    {
+        result = left;
+    }
+    else if (strcmp(op, "NOT") == 0)
+    {
+        result = !left && !right;
+    }
+    else if (strcmp(op, "AND") == 0)
+    {
+        result = left && right;
+    }
+    else if (strcmp(op, "OR") == 0)
+    {
+        result = left || right;
+    }
+
+    printf(result ? "True\n" : "False\n");
+    return result;
 }
 
 int main()
@@ -123,12 +121,22 @@ int main()
 
         if (strcmp(command, "IF") == 0)
         {
-            char arg1[10], arg2[10];
-            char sign[10];
-            sscanf(commands[PC], "%s %s %s %s", command, arg1, sign, arg2);
+            char arg1[10] = "", arg2[10] = "";
+            char arg3[10] = "", arg4[10] = "";
+            char sign[10] = "", sign2[10] = "";
+            char operator[100] = "";
+            int match = sscanf(commands[PC], "%s %s %s %s %s %s %s %s", command, arg1, sign, arg2, operator, arg3, sign2, arg4);
             int a = getValue(arg1);
             int b = getValue(arg2);
-            if (!condition(a, sign, b))
+            int c = 0, d = 0;
+            if (match > 5)
+            {
+                c = getValue(arg3);
+                d = getValue(arg4);
+            }
+            else
+                operator[0] = '\0';
+            if (!condition(a, sign, b, operator, c, sign2, d))
             {
                 int i = 1;
                 while (i > 0 && PC < lines - 1)
