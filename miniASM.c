@@ -1,18 +1,17 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
-int vars[26] = {0};
-char commands[100][100];
+int vars[26] = {0}; // initialize variables A-Z to 0
+char commands[100][100]; // array to store commands
 
 int getValue(char arg[])
 {
-    if (arg[0] >= 'A' && arg[0] <= 'Z')
+    if (arg[0] >= 'A' && arg[0] <= 'Z') // check if the argument is a variable (A-Z)
     {
         return vars[arg[0] - 'A'];
     }
 
-    return atoi(arg);
+    return atoi(arg); // convert the argument to an integer and return it
 }
 
 void calc(char *command, char *arg, int b)
@@ -47,7 +46,7 @@ void calc(char *command, char *arg, int b)
 
 void load(char reg, int val)
 {
-    vars[reg - 'A'] = val;
+    vars[reg - 'A'] = val; // store the value in the corresponding reg
     printf("%d LOADED TO %c\n", val, reg);
 }
 
@@ -55,21 +54,18 @@ void print(char text)
 {
     if (text >= 'A' && text <= 'Z')
     {
-        printf("%d\n", vars[text - 'A']);
+        printf("%d\n", vars[text - 'A']); // print the value of the variable
     }
 }
 
-<<<<<<< HEAD
-=======
 void printstr(char *text)
 {
-    printf("%s\n", text);
+    printf("%s\n", text); // print the string
 }
 
->>>>>>> 7a6a11d (added ELSE)
 int evalSign(int a, char *sign, int b)
 {
-    if (strcmp(sign, ">") == 0)  return a > b;
+    if (strcmp(sign, ">") == 0)  return a > b; // evaluate the condition based on the sign
     if (strcmp(sign, "<") == 0)  return a < b;
     if (strcmp(sign, "==") == 0) return a == b;
     if (strcmp(sign, "!=") == 0) return a != b;
@@ -78,11 +74,11 @@ int evalSign(int a, char *sign, int b)
 
 int condition(int a, char *sign, int b, char *op, int c, char *sign2, int d)
 {
-    int left = evalSign(a, sign, b);
-    int right = evalSign(c, sign2, d);
+    int left = evalSign(a, sign, b); // evaluate the left side of the condition
+    int right = evalSign(c, sign2, d); // evaluate the right side of the condition
     int result;
 
-    if (strcmp(op, "") == 0)
+    if (strcmp(op, "") == 0) // if there is no operator, return the left side result
     {
         result = left;
     }
@@ -99,7 +95,7 @@ int condition(int a, char *sign, int b, char *op, int c, char *sign2, int d)
         result = left || right;
     }
 
-    printf(result ? "True\n" : "False\n");
+    printf(result ? "True\n" : "False\n"); // print the result of the condition
     return result;
 }
 
@@ -108,16 +104,16 @@ int main()
 
     char input[100];
     char command[20];
-    int PC = 0;
-    int lines = 0;
+    int PC = 0; //keep track of the current command being executed
+    int lines = 0; // count the number of lines of commands
 
-    while (fgets(commands[lines], 100, stdin))
+    while (fgets(commands[lines], 100, stdin)) // read commands from input until END
     {
-        commands[lines][strcspn(commands[lines], "\n")] = '\0';
+        commands[lines][strcspn(commands[lines], "\n")] = '\0'; // remove newline from the command
 
         if (strcmp(commands[lines], "END") == 0)
         {
-            break;
+            break; // stop reading commands after END
         }
         lines++;
     }
@@ -137,21 +133,17 @@ int main()
             int a = getValue(arg1);
             int b = getValue(arg2);
             int c = 0, d = 0;
-            if (match > 5)
+            if (match > 5) // if there is a second condition, get the values of arg3 and arg4
             {
                 c = getValue(arg3);
                 d = getValue(arg4);
             }
-            else
+            else // if there is no second condition, set the operator to an empty string
                 operator[0] = '\0';
-<<<<<<< HEAD
-=======
-
->>>>>>> 7a6a11d (added ELSE)
             if (!condition(a, sign, b, operator, c, sign2, d))
             {
                 int i = 1;
-                while (i > 0 && PC < lines - 1)
+                while (i > 0 && PC < lines - 1) // skip to ENDIF if the condition is false
                 {
                     PC++;
                     char line[20];
@@ -164,18 +156,16 @@ int main()
                 }
             }
         }
-<<<<<<< HEAD
-=======
         else if (strcmp(command, "ENDIF") == 0)
         {
-            if (PC + 1 < lines)
+            if (PC + 1 < lines) // check if there is a next line after ENDIF
             {
                 char nextLine[20];
                 sscanf(commands[PC + 1], "%s", nextLine);
                 if (strcmp(nextLine, "ELSE") == 0)
                 {
                     int j = 1;
-                    while (j > 0 && PC < lines - 1)
+                    while (j > 0 && PC < lines - 1) // skip to ENDELSE if there is an ELSE after ENDIF
                     {
                         PC++;
                         char line[20];
@@ -189,7 +179,6 @@ int main()
             }
         }
         
->>>>>>> 7a6a11d (added ELSE)
         else if (strcmp(command, "LOAD") == 0)
         {
             char var;
@@ -200,11 +189,9 @@ int main()
         else if (strcmp(command, "PRINT") == 0)
         {
             char var;
-<<<<<<< HEAD
             sscanf(commands[PC], "%s %c", command, &var);
             print(var);
         }
-=======
             char text[100];
             sscanf(commands[PC], "%s %c", command, &var);
             print(var);
@@ -215,7 +202,6 @@ int main()
             sscanf(commands[PC], "%s %s", command, str);
             printstr(str);
         }
->>>>>>> 7a6a11d (added ELSE)
         else if (strcmp(command, "ADD") == 0
             || strcmp(command, "SUB") == 0
             || strcmp(command, "MUL") == 0
