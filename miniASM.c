@@ -59,6 +59,14 @@ void print(char text)
     }
 }
 
+<<<<<<< HEAD
+=======
+void printstr(char *text)
+{
+    printf("%s\n", text);
+}
+
+>>>>>>> 7a6a11d (added ELSE)
 int evalSign(int a, char *sign, int b)
 {
     if (strcmp(sign, ">") == 0)  return a > b;
@@ -136,6 +144,10 @@ int main()
             }
             else
                 operator[0] = '\0';
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7a6a11d (added ELSE)
             if (!condition(a, sign, b, operator, c, sign2, d))
             {
                 int i = 1;
@@ -152,6 +164,32 @@ int main()
                 }
             }
         }
+<<<<<<< HEAD
+=======
+        else if (strcmp(command, "ENDIF") == 0)
+        {
+            if (PC + 1 < lines)
+            {
+                char nextLine[20];
+                sscanf(commands[PC + 1], "%s", nextLine);
+                if (strcmp(nextLine, "ELSE") == 0)
+                {
+                    int j = 1;
+                    while (j > 0 && PC < lines - 1)
+                    {
+                        PC++;
+                        char line[20];
+                        sscanf(commands[PC], "%s", line);
+                        if (strcmp(line, "ELSE") == 0)
+                            j++;
+                        else if (strcmp(line, "ENDELSE") == 0)
+                            j--;
+                    }
+                }
+            }
+        }
+        
+>>>>>>> 7a6a11d (added ELSE)
         else if (strcmp(command, "LOAD") == 0)
         {
             char var;
@@ -162,9 +200,22 @@ int main()
         else if (strcmp(command, "PRINT") == 0)
         {
             char var;
+<<<<<<< HEAD
             sscanf(commands[PC], "%s %c", command, &var);
             print(var);
         }
+=======
+            char text[100];
+            sscanf(commands[PC], "%s %c", command, &var);
+            print(var);
+        }
+        else if (strcmp(command, "PRINTSTR") == 0)
+        {
+            char str[100];
+            sscanf(commands[PC], "%s %s", command, str);
+            printstr(str);
+        }
+>>>>>>> 7a6a11d (added ELSE)
         else if (strcmp(command, "ADD") == 0
             || strcmp(command, "SUB") == 0
             || strcmp(command, "MUL") == 0
