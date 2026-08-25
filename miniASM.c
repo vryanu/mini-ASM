@@ -192,10 +192,6 @@ int main()
             sscanf(commands[PC], "%s %c", command, &var);
             print(var);
         }
-            char text[100];
-            sscanf(commands[PC], "%s %c", command, &var);
-            print(var);
-        }
         else if (strcmp(command, "PRINTSTR") == 0)
         {
             char str[100];
